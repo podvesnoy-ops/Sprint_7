@@ -3,6 +3,7 @@ package ru.yandex.praktikum.tests;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.Step;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 import ru.yandex.praktikum.BaseTest;
 
@@ -19,7 +20,7 @@ public class GetOrdersTest extends BaseTest {
     @Step("Запрос списка заказов")
     public void getOrdersListReturns200AndOrdersList() {
         apiSteps.getOrders()
-                .statusCode(200)
+                .statusCode(HttpStatus.SC_OK)
                 .body("orders", instanceOf(List.class));
     }
 }

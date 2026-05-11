@@ -3,6 +3,7 @@ package ru.yandex.praktikum.tests;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.qameta.allure.Step;
+import org.apache.http.HttpStatus;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -37,13 +38,16 @@ public class CreateOrderTest extends BaseTest {
 
     @Test
     @Step("Проверка создания заказа")
-    @Description("Параметризованный тест: проверяет создание заказа с различными комбинациями цветов (BLACK, GREY, оба или null). " +
-            "Ожидается статус 201 Created и номер трека (track) в ответе.")
+    @Description("Параметризованный тест: проверка создания заказа.")
     public void createOrderReturnsTrack() {
         Order order = new Order(colors);
 
-        apiSteps.createOrder(order)
-                .statusCode(201)
-                .body("track", notNullValue());
+        //для @After
+        orderTrack = apiSteps.createOrder(order)
+                .statusCode(HttpStatus.SC_CREATED)
+                .body("track", notNullValue())
+                .extract()
+                .jsonPath()
+                .getInt("track");
     }
 }

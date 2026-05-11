@@ -65,5 +65,12 @@ public class ApiSteps {
                 .getString("id");
     }
 
+    public ValidatableResponse cancelOrder(int track) {
+        return given()
+                .header("Content-Type", "application/json")
+                .body("{\"track\": " + track + "}")  //
+                .put(ApiConstants.ORDER_ENDPOINT + "/cancel")
+                .then();
+    }
 
 }
