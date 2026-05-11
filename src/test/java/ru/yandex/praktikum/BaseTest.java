@@ -1,6 +1,7 @@
 package ru.yandex.praktikum;
 
 import io.restassured.RestAssured;
+import org.apache.http.HttpStatus;
 import org.junit.After;
 import org.junit.Before;
 import ru.yandex.praktikum.constants.ApiConstants;
@@ -30,18 +31,18 @@ public class BaseTest {
         if (courierId != null && !courierId.isBlank()) {
             try {
                 apiSteps.deleteCourier(courierId)
-                        .statusCode(200)
+                        .statusCode(HttpStatus.SC_OK)
                         .body("ok", org.hamcrest.Matchers.equalTo(true));
             } catch (AssertionError e) {
                 System.err.println("Не удалось удалить курьера ID=" + courierId);
             }
         }
 
-        // Отмена заказа — мягкая, не роняет тест
+        // Отмена заказа
         if (orderTrack != null) {
             try {
                 apiSteps.cancelOrder(orderTrack)
-                        .statusCode(200)
+                        .statusCode(HttpStatus.SC_OK)
                         .body("ok", org.hamcrest.Matchers.equalTo(true));
             } catch (AssertionError e) {
                 System.err.println("Не удалось отменить заказ track=" + orderTrack);
